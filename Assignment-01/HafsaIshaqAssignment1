@@ -1,0 +1,13 @@
+double initialInvestment;
+double interestRate;
+int yearsToInvest;
+Console.Write("Enter the initial investment amount: ");
+initialInvestment = Double.Parse(Console.ReadLine());
+Console.Write("Enter the monthly interest rate: ");
+interestRate = Double.Parse(Console.ReadLine());
+Console.Write("Enter the number of years to invest: ");
+yearsToInvest = int.Parse(Console.ReadLine());
+double monthlyInterestRate = interestRate / 12 / 100;
+double totalValue = initialInvestment * Math.Pow((1 + monthlyInterestRate), yearsToInvest * 12);
+Console.WriteLine($"The future value of the investment {initialInvestment} in {yearsToInvest} years will be {totalValue} at a monthly interest rate of {interestRate}.");
+Console.WriteLine("Thanks, goodbye.");
