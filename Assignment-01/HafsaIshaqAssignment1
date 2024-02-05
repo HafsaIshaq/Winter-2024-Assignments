@@ -1,0 +1,24 @@
+Console.WriteLine("---- Future Value Calculator ----");
+Console.WriteLine();
+
+double initialInvestment;
+double interestRate;
+int yearsToInvest;
+
+Console.Write("Enter initial investment amount: ");
+initialInvestment = Double.Parse(Console.ReadLine());
+
+Console.Write("Enter annual rate: ");
+interestRate = Double.Parse(Console.ReadLine());
+
+Console.Write("Enter number of years: ");
+yearsToInvest = int.Parse(Console.ReadLine());
+
+double monthlyInterestRate = interestRate / 12 / 100;
+
+double totalValue = initialInvestment * Math.Pow((1 + monthlyInterestRate), yearsToInvest * 12);
+
+Console.WriteLine();
+
+Console.WriteLine($"The future value amount of {initialInvestment:C2} in {yearsToInvest} years is {totalValue:C2}.");
+Console.WriteLine("Thank you, goodbye");
