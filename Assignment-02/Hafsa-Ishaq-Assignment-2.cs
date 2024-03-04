@@ -1,0 +1,111 @@
+﻿using System;
+
+namespace DMITCryptEx
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Random random = new Random();
+            double spotPrice = random.NextDouble() * (2999.99 - 2600.00) + 2600.00; 
+
+            Console.WriteLine("\n---- DMITCryptoEx ETH Trader by Hafsa Ishaq ----\n");
+            Console.WriteLine($"Current ETH spot price is: {spotPrice:C}\n");
+
+            while (true)
+            {
+                try
+                {
+                    Console.Write("Enter amount of ETH to purchase: ");
+                    double ethAmount = Convert.ToDouble(Console.ReadLine());
+
+                    if (ethAmount <= 0)
+                    {
+                        throw new ArgumentException("ETH amount must be greater than zero.");
+                    }
+
+                    Console.Write("\nStake your ETH (y/N): ");
+                    string stakeChoice = Console.ReadLine().ToLower();
+
+                    double commissionRate = CalculateCommissionRate(ethAmount);
+                    double totalCost = ethAmount * spotPrice * (1 + commissionRate / 100);
+                    double stakingReward = 0.0;
+
+                    if (stakeChoice == "y")
+                    {
+                        stakingReward = CalculateStakingReward(ethAmount);
+                        Console.WriteLine($"Monthly staking reward: {stakingReward:C}");
+                    }
+
+                    Console.WriteLine("\nPlease review your order ...\n");
+                    Console.WriteLine($"Total ETH purchased: {ethAmount:F6}");
+                    Console.WriteLine($"ETH spot price: {spotPrice:C}");
+                    Console.WriteLine($"Commission rate: {commissionRate:F3}%");
+                    Console.WriteLine($"Total commission: {(ethAmount * spotPrice * (commissionRate / 100)):C}");
+                    Console.WriteLine($"Staked? {(stakeChoice == "y" ? "y" : "n")}");
+                    Console.WriteLine("--------------------------------");
+                    Console.WriteLine($"Total purchase: {totalCost:C}");
+
+                    Console.Write("\nWould you like to continue with your order (y/N): ");
+                    string confirmation = Console.ReadLine().ToLower();
+
+                    if (confirmation == "y")
+                    {
+                        Console.WriteLine("Your order has been sent. Thank you.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Order cancelled.");
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("ETH amount must be a number.");
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+
+                Console.Write("\nDo you want to end the program? (y/N): ");
+                string endChoice = Console.ReadLine().ToLower();
+                if (endChoice == "y")
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine("\nThank you for using DMITCryptoEx - Hafsa Ishaq");
+        }
+
+        static double CalculateCommissionRate(double ethAmount)
+        {
+            if (ethAmount >= 0.000001 && ethAmount < 1.0)
+            {
+                return 1.9;
+            }
+            else if (ethAmount >= 1.0 && ethAmount < 5.0)
+            {
+                return 1.75;
+            }
+            else if (ethAmount >= 5.0 && ethAmount < 10.0)
+            {
+                return 1.5;
+            }
+            else if (ethAmount >= 10.0)
+            {
+                return 1.25;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid ETH amount.");
+            }
+        }
+
+        static double CalculateStakingReward(double ethAmount)
+        {
+            double annualRate = 3.1 / 100; 
+            return ethAmount * annualRate / 12; 
+        }
+    }
+}
